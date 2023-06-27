@@ -22,7 +22,10 @@ def coef_list2str(coef_list, latex=False, ratio=4):
 
     for order, coef in enumerate(coef_list):
         is_final = max_order - 1 == order
-        x_sign = f'x^{order + 1}' if latex else f' * x ^ {order + 1}'
+        if order > 0:
+            x_sign = f'x^{order + 1}' if latex else f' * x ^ {order + 1}'
+        else:
+            x_sign = f'x' if latex else f' * x'
         with torch.no_grad():
             results = f'{get_sign(coef.item(), is_final, ratio)}{x_sign} {results}'
     return results
@@ -65,7 +68,6 @@ def make_poly_data(num_data: int, max_order: int, range_info: dict, ratio: int, 
         'bias': b,
         'coef_list': coef_list
     }
-
 
 
 def show_regression(x, y, model, epoch, show=True, **kwargs):
