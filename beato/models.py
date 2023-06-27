@@ -23,8 +23,8 @@ class Polynomial(nn.Module):
         :return:
         """
         x_sum = x * self.coefficient[0]
-        for order, coef in enumerate(self.coefficient, 1):
-            x_sum += x ** (order + 1) * coef
+        for order in range(1, self.max_order):
+            x_sum += x ** (order + 1) * self.coefficient[order]
 
         return x_sum + self.bias
 
@@ -35,6 +35,7 @@ class Polynomial(nn.Module):
 if __name__ == '__main__':
     import numpy as np
     reg = Polynomial(3, bias=False)
+    print(len(reg.coefficient))
     dummy_x = torch.from_numpy(np.random.randint(0, 10, 10).astype(np.float32) / 10)
     dummy_y = reg(dummy_x)
 
